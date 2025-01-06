@@ -138,20 +138,4 @@ Please make sure you are in the root folder (`/tiktok-clone:`)
 
 Finally, you can view the app on [http://localhosts:3000](http://localhosts:3000)
 
-<!-- Contributing -->
 
-<br />
-
-### :wave: Contributing
-
-<a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Louis3797/awesome-readme-template" />
-</a>
-
-#### Contributions are always welcome!
-
-<!-- Contact -->
-
-### Author
-
-- [@zwelhtetyan](https://www.linkedin.com/in/zwelhtetyan/)
