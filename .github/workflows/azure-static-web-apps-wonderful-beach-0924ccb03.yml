@@ -22,9 +22,13 @@ jobs:
         with:
           submodules: true
           lfs: false
+          
+      - name: Install Specific React Version
+        run: npm install react@18.2.0 react-dom@18.2.0
 
       - name: Install OIDC Client from Core Package
-        run: npm install @actions/core@1.6.0 @actions/http-client
+        run: npm install @actions/core@1.6.0 @actions/http-client --legacy-peer-deps
+
 
       - name: Build And Deploy
         id: builddeploy
