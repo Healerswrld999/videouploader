@@ -12,7 +12,7 @@ on:
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-22.04 # Explicitly use ubuntu-22.04 to avoid warnings about ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Build and Deploy Job
     permissions:
        id-token: write
@@ -22,7 +22,15 @@ jobs:
         with:
           submodules: true
           lfs: false
-          
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install Specific React Version
         run: npm install react@18.2.0 react-dom@18.2.0
 
@@ -32,6 +40,8 @@ jobs:
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client --legacy-peer-deps
 
+      - name: Lint Code
+        run: npm run lint
 
       - name: Build And Deploy
         id: builddeploy
@@ -39,16 +49,13 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WONDERFUL_BEACH_0924CCB03 }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-22.04 # Explicitly use ubuntu-22.04 to avoid warnings about ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Close Pull Request Job
     steps:
       - name: Cleanup after PR closure
